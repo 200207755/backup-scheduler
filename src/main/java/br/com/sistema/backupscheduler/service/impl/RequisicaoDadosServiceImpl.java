@@ -48,11 +48,12 @@ public class RequisicaoDadosServiceImpl implements RequisicaoDadosService {
 				List<String> arquivos = new ArrayList<String>();
 				System.out.println("\n ****** INICIANDO GERAÇÃO XML PARA O TENANT ( "+banco+" ) *******");
 				List<String> tabelasIgnoradas= new ArrayList<String>();
+				tabelasIgnoradas.add("REQUISICAODADOS");
 				for (VwTableNames vw : tabelas) {
+					cont ++;
 					if (tabelasIgnoradas.contains(vw.getTabela())) {
 						continue;
 					}
-					cont ++;
 					System.out.println("\n Criando SQL: ....... "+cont+" DE "+tabelas.size()+"......TABELA:"+vw.getTabela());
 					String caminhoSqlInsert = caminhoBase+vw.getTabela()+".sql";
 					escreverDatabaseTableInsert(banco, caminhoSqlInsert, vw.getTabela());
