@@ -40,15 +40,18 @@ public class RequisicaoDadosServiceImpl implements RequisicaoDadosService {
 		for (RequisicaoDados requisicao : listaRequisicoes) {
 			Date data = new Date();
 			String banco = requisicao.getBancoDados();
-			try {//try vai ser por requisição, caso gere qualquer erro finaliza a requisicao atual e segue para a próxima
+			try {
 				String caminhoBase=PASTA_LOCAL;
 				criarPasta(caminhoBase);
 				List<VwTableNames> tabelas = tableNamesRepository.buscarTabelas(banco);
 				int cont = 0;
 				List<String> arquivos = new ArrayList<String>();
 				System.out.println("\n ****** INICIANDO GERAÇÃO XML PARA O TENANT ( "+banco+" ) *******");
-				
+				List<String> tabelasIgnoradas= new ArrayList<String>();
 				for (VwTableNames vw : tabelas) {
+					if (tabelasIgnoradas.contains(vw.getTabela())) {
+						continue;
+					}
 					cont ++;
 					System.out.println("\n Criando SQL: ....... "+cont+" DE "+tabelas.size()+"......TABELA:"+vw.getTabela());
 					String caminhoSqlInsert = caminhoBase+vw.getTabela()+".sql";
